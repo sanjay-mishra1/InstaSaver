@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Select An Option"
+        android:layout_marginStart="20dp"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:id="@+id/dialogTitle"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:id="@+id/enterLinkLiner"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:hint="Eg. www.instagram.com/p/nasa"
+            android:textSize="18sp"
+            android:id="@+id/accountLink"
+            android:textColor="#000"
+            android:inputType="textWebEditText"
+            android:background="#d9d9d9"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_margin="4dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="35dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/loadAccountButton"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#000"
+            android:layout_gravity="end"
+            android:layout_marginBottom="45dp"
+            android:text="Go"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

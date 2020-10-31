@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SeePostActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:id="@+id/profileimage"
+                    android:layout_marginTop="5dp"
+                    android:onClick="downloadProfileImage"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="50dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_toEndOf="@id/profileimage"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="35dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textColor="#fff"
+                        android:textSize="16sp"
+                        android:lines="1"
+                        android:id="@+id/profilename"
+                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="#fff"
+                            android:textSize="12sp"
+                            android:id="@+id/postTime"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="#fff"
+                            android:textSize="12sp"
+                            android:gravity="end"
+                            android:lines="1"
+                            android:visibility="invisible"
+                            android:layout_marginStart="10dp"
+                            android:drawableStart="@drawable/dot"
+                            android:layout_marginEnd="20dp"
+                            android:id="@+id/postLikes"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+                <ProgressBar
+                    android:layout_width="30dp"
+                    android:indeterminateTint="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    android:id="@+id/save_progress"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30dp"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:id="@+id/saved"
+                    android:src="@drawable/ic_bookmark_border_not_done"
+                    android:onClick="savedClicked"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="50dp" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/appbar"
+        android:id="@+id/swiprefresh"
+        android:layout_height="match_parent">
+    <include layout="@layout/content_see_post"
+        android:layout_marginTop="60dp"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_file_download_black_24dp" />
+</RelativeLayout>

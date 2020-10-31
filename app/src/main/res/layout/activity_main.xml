@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:id="@+id/profileimage"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="50dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="#fff"
+                    android:text="searching..."
+                     android:layout_toEndOf="@id/profileimage"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/linear"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/state_food_items"
+                    android:id="@+id/profilename"
+                    android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    android:paddingEnd="10dp"
+                    android:drawablePadding="5dp"
+                    android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linear"
+            android:layout_centerVertical="true"
+            android:gravity="center|center_vertical"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="40dp"
+                android:id="@+id/saved"
+                android:src="@drawable/logout"
+                android:padding="10dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/state_food_items"
+                android:onClick="logoutClicked"
+                android:layout_marginEnd="5dp"
+                android:layout_height="40dp"
+                app:tint="#fff" />
+
+
+            <ImageView
+                android:layout_width="40dp"
+                android:id="@+id/settings"
+                android:layout_marginStart="5dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_settings_black_24dp"
+                android:background="@drawable/state_food_items"
+                android:onClick="settingsClicked"
+                android:layout_marginEnd="5dp"
+                android:layout_height="40dp"
+                app:tint="#fff" />
+        </LinearLayout>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

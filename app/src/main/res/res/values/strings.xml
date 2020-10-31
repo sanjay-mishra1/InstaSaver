@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">InstaSaver</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_see_post">SeePostActivity</string>
+
+    <string name="title_activity_image_viewer"> </string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="unable_to_open_file">Unable to open file</string>
+</resources>
