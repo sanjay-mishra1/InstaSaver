@@ -70,6 +70,7 @@
                 android:id="@+id/settings"
                 android:layout_marginStart="5dp"
                 android:padding="8dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_settings_black_24dp"
                 android:background="@drawable/state_food_items"
                 android:onClick="settingsClicked"
