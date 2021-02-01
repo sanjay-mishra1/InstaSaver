@@ -102,6 +102,8 @@ import java.util.List;
                         Log.e("Preview-Error","Not found "+name+" pos "+postLink);
                     }
                     viewHolder.setImg(img,preview, (HashMap<String, Object>) imgs.get("data"),postLink,context,name);
+                }else{
+                    viewHolder.openPost((String) imgs.get("postLink"),context);
                 }
                 viewHolder.setLongPress(postLink, manager,(String)imgs.get("name"));
                 viewHolder.itemView.findViewById(R.id.delete).setOnClickListener(v -> {

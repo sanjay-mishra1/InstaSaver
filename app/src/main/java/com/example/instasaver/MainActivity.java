@@ -32,6 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.instasaver.extra.MyClipbord;
 import com.example.instasaver.extra.PendingPostActivity;
 import com.example.instasaver.extra.Settings;
 
@@ -344,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (error.getErrorCode()!=-1) {
+                if (error.getErrorCode()!=-1 &&error.getErrorCode()!=-2) {
                     findViewById(R.id.progressRelative).setVisibility(View.GONE);
                     findViewById(R.id.errorScreen).setVisibility(View.VISIBLE);
                 }
@@ -475,6 +476,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
+
 
     private void extractName() {
        try {

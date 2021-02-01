@@ -90,6 +90,18 @@ class ViewHolder extends RecyclerView.ViewHolder {
             });
         }
     }
+    public void openPost(String link,Context context){
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewSeePostActivity.class);
+                intent.putExtra("url", link);
+                intent.putExtra("isAuto", false);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+    }
     public void setLongPress(String s, FragmentManager manager, String name) {
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

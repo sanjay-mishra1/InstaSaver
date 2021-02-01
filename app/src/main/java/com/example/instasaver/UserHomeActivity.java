@@ -335,8 +335,15 @@ public class UserHomeActivity extends AppCompatActivity {
             webView.goBack();
         }
         else{Log.e("back","finishing");
-            finish();
+        clipbord.removeClipListener();
+        finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clipbord.removeClipListener();
     }
 
     public void logoutClicked(View view) {
@@ -377,12 +384,14 @@ public class UserHomeActivity extends AppCompatActivity {
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (error.getErrorCode()!=-1) {
+                if (error.getErrorCode()!=-1 && error.getErrorCode()!=-2) {
                     findViewById(R.id.progressRelative).setVisibility(View.GONE);
                     findViewById(R.id.errorScreen).setVisibility(View.VISIBLE);
                 }
             }
-            Log.e("LoginThread", "Error received " + error);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.e("LoginThread", "Error received " + error.getErrorCode());
+            }
         }
 
         @Override
@@ -400,6 +409,7 @@ public class UserHomeActivity extends AppCompatActivity {
             if (url.endsWith("comments/")){
                 if (view.canGoBack())
                 {   clipbord.storeDownload(url.replace("/comments/",""));
+                Toast.makeText(UserHomeActivity.this,"Added into pending post",Toast.LENGTH_SHORT).show();
                     view.goBack();
                 }
 

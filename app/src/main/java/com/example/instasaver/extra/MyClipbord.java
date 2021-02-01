@@ -43,6 +43,9 @@ public class MyClipbord  {
     private SharedPreferences preferences;
     private String post;
     private String previous ="";
+    private ClipboardManager clipboardManager;
+    private ClipboardManager.OnPrimaryClipChangedListener clipListener;
+
     public MyClipbord(Activity context){
         this.context=context;
         requestQueue= Volley.newRequestQueue(context);
@@ -55,31 +58,38 @@ public class MyClipbord  {
 
     void loadClipboardListener(){
      try {Log.e("Clipbaord","Clip method");
-         final ClipboardManager clipboardManager = (ClipboardManager)
+          clipboardManager = (ClipboardManager)
                 context. getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
-         clipboardManager.addPrimaryClipChangedListener(() -> {
-             Log.e("Clip","Copied");
-             post=clipboardManager.getText().toString();
-               try {
-                   if (!previous.equals(post))
-                   {   previous=post;
-                       if (post.contains(".jpg"))
-                       {   String name="",link;
-                           if(post.contains("->"))
-                           {
-                               String[] data=post.split("->");name=data[1]+"_";link=data[0];
-                           }else link=post;
-                           download(link,name+link.substring(link.lastIndexOf("/")+1, link.lastIndexOf("?")),link);
-                       }
-                       else
-                           downloadPost(post);
+          clipListener = () -> {
+              Log.e("Clip", "Copied");
+              post = clipboardManager.getText().toString();
+              try {
+                  if (!previous.equals(post)) {
+                      previous = post;
+                      if (post.contains(".jpg")) {
+                          String name = "", link;
+                          if (post.contains("->")) {
+                              String[] data = post.split("->");
+                              name = data[1] + "_";
+                              link = data[0];
+                          } else link = post;
+                          download(link, name + link.substring(link.lastIndexOf("/") + 1, link.lastIndexOf("?")), link);
+                      } else
+                          downloadPost(post);
 
-                   }
-               }catch (Exception e){e.printStackTrace();}
-         });
+                  }
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          };
+         clipboardManager.addPrimaryClipChangedListener(clipListener);
      }catch (Exception e){e.printStackTrace();}
     }
-
+    public void removeClipListener(){
+        try {
+            clipboardManager.removePrimaryClipChangedListener(clipListener);
+        }catch (Exception e){}
+    }
   public  void downloadPost(String img){
       try {
           if (img.startsWith("https")) {
@@ -91,24 +101,28 @@ public class MyClipbord  {
 
 
     private void sendRequest(final String url) {
-        String temp=url+"?__a=1";
-        Log.e("VolleyURL",url);
-        storeDownload(url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(temp, null,
-                response -> {
-                    try {
-                        HashMap<String, Object> hashMap = new HashMap<>(Objects.requireNonNull(JsonExtractor.jsonToMap(response))) ;
-                        HashMap<String,Object> data =(HashMap<String, Object>) ((HashMap)( hashMap.get("graphql"))).get("shortcode_media") ;
-                        fetchData(data,url);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> Log.e("Volley","Notification Error response "+error.getMessage())
-        );
+        Handler handler=new Handler();
+        handler.postDelayed(() -> {
+            String temp=url+"?__a=1";
+            Log.e("VolleyURL",url);
+            storeDownload(url);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(temp, null,
+                    response -> {
+                        try {
+                            HashMap<String, Object> hashMap = new HashMap<>(Objects.requireNonNull(JsonExtractor.jsonToMap(response))) ;
+                            HashMap<String,Object> data =(HashMap<String, Object>) ((HashMap)( hashMap.get("graphql"))).get("shortcode_media") ;
+                            fetchData(data,url);
+                            Log.e("Clipboard", "sendRequest: Data received "+data );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    error -> Log.e("Volley","Notification Error response "+error.getMessage())
+            );
 
-        requestQueue.add(jsonObjectRequest);
+            requestQueue.add(jsonObjectRequest);
 
+        },2000);
     }
    public void storeDownload(String url){
         SharedPreferences.Editor editor=preferences.edit();

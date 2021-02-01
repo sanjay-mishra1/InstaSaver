@@ -1,12 +1,15 @@
 package com.example.instasaver.extra;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +19,23 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.instasaver.JsonExtractor;
 import com.example.instasaver.R;
 import com.example.instasaver.RecyclerUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -115,23 +127,28 @@ public class PendingPostActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
     private void sendRequest(final String url,int index) {
-        String temp = url + "?__a=1";
-        Log.e("VolleyURL", url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(temp, null,
-                response -> {
-                    try {
-                        HashMap<String, Object> hashMap = new HashMap<>(Objects.requireNonNull(JsonExtractor.jsonToMap(response)));
-                        HashMap<String, Object> data = (HashMap<String, Object>) ((HashMap) (hashMap.get("graphql"))).get("shortcode_media");
-                        fetchData(data, url,index);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> Log.e("Volley", "Notification Error response " + error.getMessage())
-        );
+        Handler handler=new Handler();
+        handler.postDelayed(() -> {
+            String temp = url + "?__a=1";
+            Log.e("VolleyURL", url);
 
-        requestQueue.add(jsonObjectRequest);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(temp, null,
+                    response -> {
+                        try {
+                            HashMap<String, Object> hashMap = new HashMap<>(Objects.requireNonNull(JsonExtractor.jsonToMap(response)));
+                            HashMap<String, Object> data = (HashMap<String, Object>) ((HashMap) (hashMap.get("graphql"))).get("shortcode_media");
+                            fetchData(data, url,index);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    error -> Log.e("Volley", "Notification Error response " + error.getMessage())
+            );
+
+            requestQueue.add(jsonObjectRequest);
+        },2000);
     }
+
     private void fetchData(HashMap<String, Object> data, String url, int index) {
         HashMap<String,Object> owner= (HashMap<String, Object>) data.get("owner");
         String  profilename= (String) owner.get("username");

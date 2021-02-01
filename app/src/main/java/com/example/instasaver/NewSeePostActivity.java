@@ -79,6 +79,7 @@ public class NewSeePostActivity extends AppCompatActivity {
     private boolean pageFailed=false;
     private String profileimage;
     private ArrayList<String> videoPreviewImgList;
+    private boolean forceRefresh=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +106,8 @@ public class NewSeePostActivity extends AppCompatActivity {
 
         swipeRefreshLayout.setOnRefreshListener(() -> onRefreshDone());
     }
+
+    private static final String TAG = "NewPost";
     void receive(){
         swipeRefreshLayout.setRefreshing(true);
         Intent intent=getIntent();
@@ -118,6 +121,7 @@ public class NewSeePostActivity extends AppCompatActivity {
             fetchData(data);
             MainActivity.senderMap=null;
         }
+        Log.e(TAG, "receive: "+url);
     }
 
     private void sendRequest(final String url) {
@@ -245,6 +249,7 @@ public class NewSeePostActivity extends AppCompatActivity {
     }
 
     private void loadUrl(String url) {
+        Log.e("NewPost", "loadUrl: "+url );
         webView.setWebViewClient(new  Browse(url));
         if (Build.VERSION.SDK_INT>21){
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView,true);
@@ -288,6 +293,7 @@ public class NewSeePostActivity extends AppCompatActivity {
                         "return ('done');})();", null);
             }else Log.e("Backpress","auto false issaved not true");
         }
+        webView.stopLoading();
         super.onBackPressed();
     }
 
@@ -304,6 +310,7 @@ public class NewSeePostActivity extends AppCompatActivity {
 
     public void onRefreshDone() {
         try {
+            forceRefresh=true;
             media.clear();
             adapter.notifyDataSetChanged();
             Log.e("refresh","sended");
@@ -323,6 +330,7 @@ public class NewSeePostActivity extends AppCompatActivity {
         String url;
         Browse(String url){
             this.url=url;
+            Log.e(TAG, "Browse: "+url);
         }
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -339,6 +347,7 @@ public class NewSeePostActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            forceRefresh=false;
             if(pageFailed)
             {   Log.e("Fetch","From webview");
                 activatemediaExtractor();
@@ -373,7 +382,9 @@ public class NewSeePostActivity extends AppCompatActivity {
         }
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if(forceRefresh)
             view.loadUrl(url);
+            Log.e(TAG, "shouldOverrideUrlLoading: "+url );
             return super.shouldOverrideUrlLoading(view, request);
         }
     }
@@ -602,7 +613,7 @@ public class NewSeePostActivity extends AppCompatActivity {
         //Set a description of this download, to be displayed in notifications (if enabled)
         request.setDescription("Downloading");
         //Set the local destination for the downloaded file to a path within the application's external files directory
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, name);
         //Enqueue a new download and same the referenceId
         downloadManager.enqueue(request);
     }
